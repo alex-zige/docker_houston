@@ -11,8 +11,8 @@ web:
   build: .
   volumes:
     - /home/deploy/dockerised_apps/nginx-proxy/assets/<%= app_name %>.staging.touchtech.co.nz/public:/app/public/
-    - /home/deploy/dockerised_apps/logs/<%= app_name %>.staging.touchtech.co.nz/:/app/log/
-    - /home/deploy/dockerised_apps/logs/<%= app_name %>.staging.touchtech.co.nz/unicorn:/var/log/
+    - /home/deploy/dockerised_apps/logs/<%= app_name %>/:/app/log/
+    - /home/deploy/dockerised_apps/logs/<%= app_name %>/unicorn:/var/log/
   ports:
     - "3000"
   links:

@@ -3,5 +3,7 @@ set -e
 
 bundle exec rake db:create
 bundle exec rake db:migrate
+mkdir -p /app/tmp && chmod 777 /app/tmp
+bundle exec rake assets:precompile
 bundle exec unicorn -c config/unicorn.rb -E staging
 
