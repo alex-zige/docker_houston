@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: docker
+  password: docker
+  pool: 5
+  host: postgresql
+
+development:
+  <<: *default
+  database: <%= app_name %>_dev
+
+staging:
+  <<: *default
+  database: <%= app_name %>_staging
+
+test:
+  <<: *default
+  database: <%= app_name %>_test
