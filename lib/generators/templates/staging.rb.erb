@@ -1,0 +1,10 @@
+role :web,        "docker.touchtech.co.nz"
+role :app,        "docker.touchtech.co.nz"
+
+set :app_name,  "<%= @app_name %>"
+
+set :rails_env, "staging"
+server 'docker.touchtech.co.nz', user: 'deploy', roles: [:app, :install]
+set :working_dir, "/home/deploy/dockerised_apps/#{fetch(:app_name)}/current"
+set :deploy_to, "#{fetch(:working_dir).chomp('current')}"
+set :release_dir, ->{Pathname.new("/home/deploy/dockerised_apps/#{fetch(:app_name)}/current")}
