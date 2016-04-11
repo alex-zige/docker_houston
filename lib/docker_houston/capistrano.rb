@@ -37,7 +37,7 @@ end
 
 namespace :docker do
   desc "deploy a git tag to a docker container"
-  task :deploy do
+  task :lift_off do
     on roles :app do
       invoke 'deploy'
       invoke 'docker:setup_db'

@@ -6,6 +6,8 @@ module DockerHouston
     class InstallGenerator < Rails::Generators::Base
 
       argument :app_name, type: :string, default: Rails.application.class.parent_name.downcase
+      argument :app_domain, type: :string, default: "YOUR-APP-HOST-NAME"
+      argument :docker_host, type: :string, default: "YOUR-DOCKER_HOST"
 
       source_root File.expand_path("../../templates", __FILE__)
       desc "Creates a docker configuration template files to your application."

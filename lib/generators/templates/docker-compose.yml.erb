@@ -10,7 +10,7 @@ postgresql:
 web:
   build: .
   volumes:
-    - /home/deploy/dockerised_apps/nginx-proxy/assets/<%= app_name %>.staging.touchtech.co.nz/public:/app/public/
+    - /home/deploy/dockerised_apps/nginx-proxy/assets/<%= app_domain %>/public:/app/public/
     - /home/deploy/dockerised_apps/logs/<%= app_name %>/:/app/log/
     - /home/deploy/dockerised_apps/logs/<%= app_name %>/unicorn:/var/log/
   ports:
@@ -20,7 +20,7 @@ web:
   environment: &web
     RAILS_ENV: staging
     SECRET_KEY_BASE: 43834f4b48946cb62b30130a4577cec2d0a842fcf97095706ccf0de7f293689336c1c0f84a55a26a689ca8ca21edd6da477a9ba9adce48176fe0b23e17f16fd4
-    VIRTUAL_HOST: <%= app_name %>.staging.touchtech.co.nz
+    VIRTUAL_HOST: <%= app_domain %>
     <<: *postgres
   # env_file: ../shared/.env
   command: ./bin/docker
