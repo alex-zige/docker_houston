@@ -1,5 +1,3 @@
-# set(:branch, (ENV['tag'] || ENV['branch'] || ask(:branch, `git describe --abbrev=0 --tags`.strip)))
-
 begin
   fetch(:repository)
   fetch(:application)
@@ -19,12 +17,10 @@ set :log_dir, -> {Pathname.new("/home/deploy/dockerised_apps/logs/#{fetch(:app_w
 
 set :app_dir, ->{fetch(:release_dir).to_s.chomp('/current')}
 
-# Override the release_path to be current_path as we
-# have no notion of release folders
 def exec_on_remote(command, message="Executing command on remote...", container_id='web')
   on roles :app do |server|
     ssh_cmd = "ssh -A -t #{server.user}@#{server.hostname}"
-      puts "#{ssh_cmd} 'cd #{fetch(:release_dir)} && docker-compose -p #{fetch(:app_with_stage)} run web #{command}"
+      puts "Executing remote command..."
       exec "#{ssh_cmd} 'cd #{fetch(:release_dir)} && docker-compose -p #{fetch(:app_with_stage)} run web #{command}'"
   end
 end
@@ -48,6 +44,7 @@ namespace :docker do
       invoke 'docker:build_container'
       invoke 'docker:stop'
       invoke 'docker:start'
+      invoke 'docker:notify'
     end
   end
 
@@ -80,7 +77,7 @@ namespace :docker do
     end
   end
 
-  desc "start service"
+  desc "start web service"
   task :start do
     on roles :app do
       within fetch(:release_dir) do
@@ -109,13 +106,23 @@ namespace :docker do
     invoke 'console'
   end
 
-  desc 'seed_fu'
+  desc 'Run seed_fu against remote url'
   task :seed_fu do
     exec_on_remote("rake db:seed_fu", "Seeding database on remote...")
   end
 
+  desc "Tail logs from remote dockerised app"
   task :logs do
     execute "cd #{fetch(:log_dir)} && tail -f staging.log"
+  end
+
+  desc 'Notify Third party IM'
+  task :notify do
+  end
+
+  desc 'Drop reseed the database'
+  task :reseed do
+    exec_on_remote("rake db:reset && rake db:seed_fu", "Reseeding database on remote...")
   end
 
 end
