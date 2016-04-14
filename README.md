@@ -40,14 +40,47 @@ APP_DOMAIN: the virtual url for the app.
 
 DOCKER_HOST: the remote host for docker instance.
 
-## Deployment
+
+##Custom Command Cap Command
+
+```ruby
+cap -T
+
+```
+Check all the docker command that is avaiable to you.
+
+
+### Deployment
 
 ```ruby
 cap staging docker:lift_off
 
 ```
 
-Run a docker deployment on the docker host.
+This will we do the following:
+
+```ruby
+      invoke 'deploy'
+      invoke 'docker:setup_db'
+      invoke 'docker:build_container'
+      invoke 'docker:stop'
+      invoke 'docker:start'
+      invoke 'docker:notify'
+```
+* Deploy a new version to the current folder.
+* Build the container for it.
+* Stop the current running containers if existed.
+* Start new container for the project.
+* Notifying to Team channel (TODO://)
+
+
+### Console
+You can also run console command insdie the rails app within the docker container.
+
+```ruby
+cap staging docker:console
+
+```
 
 
 ## Contributing
