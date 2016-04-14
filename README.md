@@ -10,8 +10,6 @@ docker_houston comes with a generator to copy and templates all necessary config
 ###Prerequisite
 Make sure you have access to the ``docker_host`` with the user as ``deploy``.
 
-```home/deploy/dockerised_apps/#{fetch(:app_with_stage)}/current```
-
 ## Installation
 
 Add this line to your application's Gemfile:
