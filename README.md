@@ -30,7 +30,7 @@ Or install it yourself as:
 
 ### Install
 
-```
+```ruby
 rails g docker_houston:install APP_NAME APP_DOMAIN DOCKER_HOST
 ```
 
@@ -42,10 +42,10 @@ DOCKER_HOST: the remote host for docker instance.
 
 ## Deployment
 
-``ruby
+```ruby
 cap staging docker:lift_off
 
-``
+```
 
 Run a docker deployment on the docker host.
 
