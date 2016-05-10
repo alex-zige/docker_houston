@@ -24,6 +24,10 @@ module DockerHouston
         copy_file "secrets.yml", "config/secrets.yml"
       end
 
+      def copy_database_file
+        copy_file "database.yml.docker.erb", "config/database.yml.docker"
+      end
+
       def copy_unicorn
         copy_file "unicorn.rb", "config/unicorn.rb"
       end

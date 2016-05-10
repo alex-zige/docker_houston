@@ -53,6 +53,13 @@ APP_DOMAIN: the virtual url for the app.
 DOCKER_HOST: the remote host for docker instance.
 
 
+###Make `bin/docker` executable
+
+```
+chmod +x bin/docker
+
+```
+
 ##Custom Command Cap Command
 
 ```ruby
