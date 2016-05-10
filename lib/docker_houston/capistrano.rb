@@ -67,16 +67,6 @@ namespace :docker do
     end
   end
 
-  desc "precompile assets"
-  task :precompile_assets do
-    on roles :app do
-      within fetch(:release_dir) do
-        execute :echo, "precompiling assets..."
-        execute "docker-compose  -p #{fetch(:app_with_stage)} run web bundle exec rake assets:precompile"
-      end
-    end
-  end
-
   desc "start web service"
   task :start do
     on roles :app do
@@ -116,8 +106,15 @@ namespace :docker do
     execute "cd #{fetch(:log_dir)} && tail -f staging.log"
   end
 
-  desc 'Notify Third party IM'
+  desc 'Notify deploy on third party IM'
   task :notify do
+    # invoke 'slack_notifier:notify'
+    # if !ENV['SLACK_TOKEN'].blank? && !ENV['SLACK_CHANNEL'].blank?
+    #   message = "New version of #{fetch(:app_name)} has been deployed at #{fetch(:app_domain)}"
+    #   channel = ENV['SLACK_CHANNEL']
+    #   puts "haha"
+    #   # DockerHouston::Slack::Message.new(message, channel).notify
+    # end
   end
 
   desc 'Drop reseed the database'

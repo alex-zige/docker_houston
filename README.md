@@ -6,8 +6,7 @@ DockerHouston is a utiilty for deploying rails app into a docker environments.
 
 It builds on the top of Capistrano for differnt deployment to a docker host.
 
-docker_houston comes with a generator to copy and templates all necessary config files and to the target rails project.
-
+DockerHouston comes with a generator to copy and templates all necessary config files and to the target rails project.
 
 ###Prerequisite
 Make sure you have access to the ``docker_host`` with the user as ``deploy``.
@@ -103,6 +102,17 @@ cap staging docker:console
 
 ```
 
+### Notifying
+To integerate with your IM chat, e.g. Slack in this case.
+Provide the Env variables for slack bot token and channel.
+
+```
+SLACK_TOKEN=YOUR-SLACK-TOKEN
+SLACK_CHANNEL=YOUR-SLACK_CHANNEL
+
+```
+
+The deploy message reads: "New version of #{fetch(:app_name)} has been deployed at #{fetch(:app_domain)}."
 
 ## Contributing
 
@@ -112,4 +122,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
