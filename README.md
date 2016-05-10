@@ -1,5 +1,7 @@
 # DockerHouston
 
+[![Gem Version](https://badge.fury.io/rb/docker_houston.svg)](https://badge.fury.io/rb/docker_houston)
+
 DockerHouston is a utiilty for deploying rails app into a docker environments.
 
 It builds on the top of Capistrano for differnt deployment to a docker host.
