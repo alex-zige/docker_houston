@@ -28,6 +28,18 @@ Or install it yourself as:
 
 ## Getting Started
 
+
+### Prerequisite
+
+Add `unicorn` to gemfile and ensure the `therubyracer` is enabled.
+
+```
+gem 'therubyracer', platforms: :ruby
+
+gem 'unicorn'
+
+```
+
 ### Install
 
 ```ruby
