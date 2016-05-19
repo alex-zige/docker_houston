@@ -103,18 +103,13 @@ namespace :docker do
 
   desc "Tail logs from remote dockerised app"
   task :logs do
-    execute "cd #{fetch(:log_dir)} && tail -f staging.log"
+    execute_on_remote "cd #{fetch(:log_dir)} && tail -f staging.log"
   end
 
   desc 'Notify deploy on third party IM'
   task :notify do
-    # invoke 'slack_notifier:notify'
-    # if !ENV['SLACK_TOKEN'].blank? && !ENV['SLACK_CHANNEL'].blank?
-    #   message = "New version of #{fetch(:app_name)} has been deployed at #{fetch(:app_domain)}"
-    #   channel = ENV['SLACK_CHANNEL']
-    #   puts "haha"
-    #   # DockerHouston::Slack::Message.new(message, channel).notify
-    # end
+    message = "New version of #{fetch(:app_name)} has been deployed at #{fetch(:app_domain)}"
+    exec "rake notifier:notify[\"#{message}\"]"
   end
 
   desc 'Drop reseed the database'
