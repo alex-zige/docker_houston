@@ -25,7 +25,7 @@ module DockerHouston
       end
 
       def copy_database_file
-        copy_file "database.yml.docker.erb", "config/database.yml.docker"
+        template "database.yml.docker.erb", "config/database.yml.docker"
       end
 
       def copy_unicorn
