@@ -6,7 +6,7 @@ require 'docker_houston/version'
 Gem::Specification.new do |spec|
   spec.name          = "docker_houston"
   spec.version       = DockerHouston::VERSION
-  spec.authors       = ["alex-zige"]
+  spec.authors       = ["alex-zige", "jesserockz"]
   spec.email         = ["alex.zige@gmail.com"]
 
   spec.summary       = "Misson Control for docker builds."

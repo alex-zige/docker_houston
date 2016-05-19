@@ -67,16 +67,6 @@ namespace :docker do
     end
   end
 
-  desc "precompile assets"
-  task :precompile_assets do
-    on roles :app do
-      within fetch(:release_dir) do
-        execute :echo, "precompiling assets..."
-        execute "docker-compose  -p #{fetch(:app_with_stage)} run web bundle exec rake assets:precompile"
-      end
-    end
-  end
-
   desc "start web service"
   task :start do
     on roles :app do
@@ -113,11 +103,13 @@ namespace :docker do
 
   desc "Tail logs from remote dockerised app"
   task :logs do
-    execute "cd #{fetch(:log_dir)} && tail -f staging.log"
+    execute_on_remote "cd #{fetch(:log_dir)} && tail -f staging.log"
   end
 
-  desc 'Notify Third party IM'
+  desc 'Notify deploy on third party IM'
   task :notify do
+    message = "New version of #{fetch(:app_name)} has been deployed at #{fetch(:app_domain)}"
+    exec "rake notifier:notify[\"#{message}\"]"
   end
 
   desc 'Drop reseed the database'
