@@ -46,6 +46,7 @@ module DockerHouston
 
       def copy_executable
         copy_file "../../../bin/docker", "bin/docker"
+        exec "chmod +x bin/docker"
       end
 
       def rails_4?
