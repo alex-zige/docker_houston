@@ -5,23 +5,31 @@ rescue IndexError => e
   puts "#{e.message} (ensure :application and :repository are set in deploy.rb)"
 end
 
-set :app_with_stage, ->{"#{fetch(:app_name)}"}
+set :app_with_stage, -> { "#{fetch(:app_name)}" }
 
-set :repo_url, ->{ fetch(:repository) } unless fetch(:repo_url)
+set :repo_url, -> { fetch(:repository) } unless fetch(:repo_url)
 
-set :release_dir, ->{Pathname.new("/home/deploy/dockerised_apps/#{fetch(:app_with_stage)}/current")}
+set :release_dir, -> { Pathname.new("/home/deploy/dockerised_apps/#{fetch(:app_with_stage)}/current") }
 
-set :shared_dir, ->{Pathname.new("/home/deploy/dockerised_apps/#{fetch(:app_with_stage)}/shared")}
+set :shared_dir, -> { Pathname.new("/home/deploy/dockerised_apps/#{fetch(:app_with_stage)}/shared") }
 
-set :log_dir, -> {Pathname.new("/home/deploy/dockerised_apps/logs/#{fetch(:app_with_stage)}")}
+set :log_dir, -> { Pathname.new("/home/deploy/dockerised_apps/logs/#{fetch(:app_with_stage)}") }
 
-set :app_dir, ->{fetch(:release_dir).to_s.chomp('/current')}
+set :app_dir, -> { fetch(:release_dir).to_s.chomp('/current') }
 
 def exec_on_remote(command, message="Executing command on remote...", container_id='web')
   on roles :app do |server|
     ssh_cmd = "ssh -A -t #{server.user}@#{server.hostname}"
-      puts "Executing remote command..."
-      exec "#{ssh_cmd} 'cd #{fetch(:release_dir)} && docker-compose -p #{fetch(:app_with_stage)} run web #{command}'"
+    puts message
+    exec "#{ssh_cmd} 'cd #{fetch(:release_dir)} && docker-compose -p #{fetch(:app_with_stage)} run web #{command}'"
+  end
+end
+
+def exec_on_server(command, message="Executing on docker server...")
+  on roles :app do |server|
+    ssh_cmd = "ssh -A -t #{server.user}@#{server.hostname}"
+    puts message
+    exec "#{ssh_cmd} '#{command}'"
   end
 end
 
@@ -44,11 +52,13 @@ namespace :docker do
       invoke 'docker:build_container'
       invoke 'docker:stop'
       invoke 'docker:start'
+      invoke 'docker:cleanup_containers'
+      invoke 'docker:cleanup_images'
       invoke 'docker:notify'
     end
   end
 
-  desc 'relink docker databse'
+  desc 'relink docker database'
   task :setup_db do
     on roles :app do
       docker_db = "#{fetch(:release_dir)}/config/database.yml.docker"
@@ -103,7 +113,7 @@ namespace :docker do
 
   desc "Tail logs from remote dockerised app"
   task :logs do
-    execute_on_remote "cd #{fetch(:log_dir)} && tail -f staging.log"
+    exec_on_remote "cd #{fetch(:log_dir)} && tail -f staging.log"
   end
 
   desc 'Notify deploy on third party IM'
@@ -112,9 +122,19 @@ namespace :docker do
     exec "rake notifier:notify[\"#{message}\"]"
   end
 
-  desc 'Drop reseed the database'
-  task :reseed do
-    exec_on_remote("rake db:reset && rake db:seed_fu", "Reseeding database on remote...")
+  desc 'Recreate DB tables'
+  task :reset_db do
+    exec_on_remote("rake db:setup", "Recreating database on remote...")
+  end
+
+  desc 'Cleanup old docker containers'
+  task :cleanup_containers do
+    exec_on_server("docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null", "Removing exited containers...")
+  end
+
+  desc 'Cleanup old docker images'
+  task :cleanup_images do
+    exec_on_server("docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null", "Removing unused images...")
   end
 
 end
