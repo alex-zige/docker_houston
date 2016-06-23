@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Misson Control for docker builds."
   spec.description   = "Utilities for deploy docker builds."
-  spec.homepage      = "http://www.google.com"
+  spec.homepage      = "https://github.com/alex-zige/docker_houston"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
