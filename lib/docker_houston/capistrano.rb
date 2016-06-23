@@ -108,7 +108,7 @@ namespace :docker do
 
   desc 'Run seed_fu against remote url'
   task :seed_fu do
-    exec_on_remote("rake db:seed_fu", "Seeding database on remote...")
+    exec_on_remote("bundle exec rake db:seed_fu", "Seeding database on remote...")
   end
 
   desc "Tail logs from remote dockerised app"
@@ -124,7 +124,7 @@ namespace :docker do
 
   desc 'Recreate DB tables'
   task :reset_db do
-    exec_on_remote("rake db:setup", "Recreating database on remote...")
+    exec_on_remote("bundle exec rake db:setup", "Recreating database on remote...")
   end
 
   desc 'Cleanup old docker containers'
@@ -135,6 +135,11 @@ namespace :docker do
   desc 'Cleanup old docker images'
   task :cleanup_images do
     exec_on_server("docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null", "Removing unused images...")
+  end
+
+  desc 'Precompile assets'
+  task :precompile_assets do
+    exec_on_remote "bundle exec rake assets:precompile", "Precompiling assets..."
   end
 
 end
