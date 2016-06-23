@@ -87,6 +87,8 @@ invoke 'docker:setup_db'
 invoke 'docker:build_container'
 invoke 'docker:stop'
 invoke 'docker:start'
+invoke 'docker:cleanup_containers'
+invoke 'docker:cleanup_images'
 invoke 'docker:notify'
 
 ```
@@ -94,7 +96,9 @@ invoke 'docker:notify'
 * Build the container for it.
 * Stop the current running containers if existed.
 * Start new container for the project.
-* Notifying to Team channel (TODO://)
+* Clean up exited containers
+* Clean up unlinked images
+* Notifying to Team channel
 
 
 ### Console
@@ -127,7 +131,7 @@ The deploy message reads: "New version of #{fetch(:app_name)} has been deployed 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/touchtechltd/docker_houston. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/alex-zige/docker_houston. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 
 ## License
