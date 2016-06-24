@@ -49,11 +49,11 @@ rails g docker_houston:install APP_NAME APP_DOMAIN DOCKER_HOST
 
 ```
 
-APP_NAME: the app name for your project.
+`APP_NAME`: the app name for your project.
 
-APP_DOMAIN: the virtual url for the app.
+`APP_DOMAIN`: the virtual url for the app.
 
-DOCKER_HOST: the remote host for docker instance.
+`DOCKER_HOST`: the remote host for docker instance.
 
 
 ###Make `bin/docker` executable
